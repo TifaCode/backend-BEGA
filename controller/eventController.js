@@ -1,19 +1,21 @@
 const Event = require('../models/events');
 
-const createEvent = async (req, res) => {
-    const newEvent = new Event({ title, place, description });
+const addEvent = async (req, res) => {
+    const { title, location, description } = req.body;
+    const newEvent = new Event({ title, location, description });
 
-    try {
-        newEvent.save();
-        res.json({ result: true })
+    try {   
+        const saveEvent = await newEvent;
+        saveEvent.save();
+        res.json({ result: true, newEvent })
     } catch {
-    res.json({ result: false, error: "Cannot create event" });
+        res.json({ result: false, error: "Cannot create event" });
     }
 };
 
-const searchEvent = async (req, res) => {
-    const event = await Event.findOne({ title: req.params.title });
-
+const findEvent = async (req, res) => {
+    const event = await Event.findbydId({ id: req.params.id });
+    
     try {
         res.json({ result: true, event})
     } catch {
@@ -21,5 +23,4 @@ const searchEvent = async (req, res) => {
     }
 };
 
-
-module.exports = { createEvent, searchEvent };
+module.exports = { addEvent, findEvent };

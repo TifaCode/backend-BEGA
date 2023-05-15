@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
   avatar: String,
   authTokens: [
     {
-      token: {
+      authToken: {
         type: String,
         required: true,
       },
@@ -40,6 +40,7 @@ userSchema.methods.generateAuthTokenAndSaveUser = async function () {
   const authToken = jwt.sign({ _id: this._id.toString() }, "phraseSecrete");
   this.authTokens.push({ authToken });
   await this.save();
+  return authToken;
 };
 
 userSchema.pre("save", async function () {

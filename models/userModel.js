@@ -19,9 +19,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate(v) {
-      if (!validator.isLength(v, { min: 6, max: 20 })) {
+      if (!validator.isLength(v, { min: 6, max: 200 })) {
         throw new Error("Mot de passe doit etre entre 6 et 20 caractères");
-      }      
+      }
     },
   },
   avatar: String,

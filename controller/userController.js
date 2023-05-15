@@ -2,21 +2,22 @@ const User = require("../models/userModel");
 const { checkBody } = require("../middleware/checkBody");
 const bcrypt = require("bcrypt");
 
+////////////////////SIGNUP////////////////////////////////////////////////////
 const signUpUser = async (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
   }
-  const user = new User(req.body);
+  const newUser = new User(req.body);
 
   try {
-    const authToken = await user.generateAuthTokenAndSaveUser();
-    res.status(201).json({ user, authToken });
+    await newUser.generateAuthTokenAndSaveUser();
+    res.status(201).json({ user: newUser });
   } catch {
     res.json({ result: false, error: "Cannot create user" });
   }
 };
-
+////////////////////SIGNIN////////////////////////////////////////////////////
 const signInUser = async (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
     res.json({ result: false, error: "Missing or empty fields" });
@@ -38,4 +39,21 @@ const signInUser = async (req, res) => {
   }
 };
 
-module.exports = { signUpUser, signInUser };
+//////////////////////LOGOUT//////////////////////////////////////////////
+
+const logout = async (req, res) => {
+  try {
+    req.user.authTokens = req.user.authTokens.filter((authToken) => {
+      return authToken.authToken !== req.authToken;
+    });
+    console.log(req.user);
+
+    let updateUser = await req.user;
+    updateUser.save();
+    res.json({ result: true, message: "deconnected" });
+  } catch (e) {
+    res.status(500).send();
+  }
+};
+
+module.exports = { signUpUser, signInUser, logout };

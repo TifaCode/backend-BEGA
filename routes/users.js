@@ -10,7 +10,6 @@ const {
 /* post users listing. */
 router.post("/signup", signUpUser);
 router.post("/signin", signInUser);
-
 router.post("/logout", authentication, logout);
 
 module.exports = router;

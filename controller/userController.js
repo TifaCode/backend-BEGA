@@ -4,13 +4,17 @@ const bcrypt = require("bcrypt");
 
 ////////////////////SIGNUP////////////////////////////////////////////////////
 const signUpUser = async (req, res) => {
-  if (!checkBody(req.body, ["email", "password"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
-    return;
-  }
+  // if (!checkBody(req.body, ["email", "password"])) {
+  //   res.json({ result: false, error: "Missing or empty fields" });
+  //   return;
+  // }
   const newUser = new User(req.body);
 
   try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user)
+      return res.json({ result: false, message: "user already exist !" });
+
     await newUser.generateAuthTokenAndSaveUser();
     res.status(201).json({ user: newUser });
   } catch {
@@ -27,12 +31,12 @@ const signInUser = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   try {
-    if (!user) throw new Error("Connection not possible");
+    if (!user) return res.json("Connection not possible");
     const isPasswordValid = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    if (!isPasswordValid) throw new Error("Connection not possible");
+    if (!isPasswordValid) return res.json("Connection not possible");
     res.json({ result: true, user });
   } catch {
     res.json({ result: false, error: "User not found" });

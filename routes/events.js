@@ -1,17 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const { addEvent, findEvent } = require('../controller/eventController')
 
-const Event = require('../models/events');
-
-router.post('/', (req, res) => {
- const { title, place, description } = req.body;
- const newEvent = new Event({ title, place, description });
-
- newEvent.save().then(() => {
-    res.json({ result: true });
- });
-});
-
+router.post('/addevent', addEvent);
+router.get('/findevent', findEvent);
 
 
 module.exports = router;

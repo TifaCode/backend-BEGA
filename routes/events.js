@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-require('../models/connectionDb');
 const Event = require('../models/events');
 
-router.post('/events', (req, res) => {
+router.post('/', (req, res) => {
  const { title, place, description } = req.body;
  const newEvent = new Event({ title, place, description });
 
@@ -12,5 +11,7 @@ router.post('/events', (req, res) => {
     res.json({ result: true });
  });
 });
+
+
 
 module.exports = router;

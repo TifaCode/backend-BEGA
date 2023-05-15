@@ -4,13 +4,10 @@ var app = express();
 
 mongoose
   .connect(process.env.CONNECT_DB, {
-    connectTimeoutMS: 1000,
+    connectTimeoutMS: 2000,
     useNewUrlParser: true,
   })
   .then(() => {
-    app.listen(55555, () => {
-      console.log("connected on Port: 55555");
-    });
     console.log("Connected");
   })
   .catch((error) => {

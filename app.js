@@ -22,4 +22,18 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/events", eventsRouter);
 
+//////////////////////google auth//////////////////////////
+const session = require("express-session");
+const oauthRouter = require("./routes/OAuth/googleAuth");
+app.use(
+  session({
+    secret: "session-secret-here",
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use("/", oauthRouter);
+//////////////////////google auth//////////////////////////
+
 module.exports = app;

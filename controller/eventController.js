@@ -13,6 +13,15 @@ const addEvent = async (req, res) => {
   }
 };
 
+const findAllEvent = async (req, res) => {
+  try {
+    const getAllEvents = await Event.find();
+    res.json({ result: true, getAllEvents });
+  } catch (e) {
+    res.json({ result: false });
+  }
+};
+
 const findEvent = async (req, res) => {
   const { id } = req.params;
   const event = await Event.findById(id);
@@ -25,4 +34,4 @@ const findEvent = async (req, res) => {
   }
 };
 
-module.exports = { addEvent, findEvent };
+module.exports = { addEvent, findEvent, findAllEvent };

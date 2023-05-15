@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const eventsSchema = mongoose.Schema({
   title: {type: String, required: true},
   date: Date,
-  lieu: {type: String, required: true},
+  place: {type: String, required: true},
   description: {type: String, required: true},
   participants: [{
     type: mongoose.Types.ObjectId, ref: 'users'

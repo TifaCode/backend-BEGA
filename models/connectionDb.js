@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-var express = require("express");
-var app = express();
 
 mongoose
   .connect(process.env.CONNECT_DB, {

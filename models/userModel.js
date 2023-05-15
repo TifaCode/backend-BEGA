@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
   firstname: String,
@@ -30,7 +33,19 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
-  createdAt: Date,
+  createdAt: { type: Date, default: Date.now },
+});
+
+userSchema.methods.generateAuthTokenAndSaveUser = async function () {
+  const authToken = jwt.sign({ _id: this._id.toString() }, "phraseSecrete");
+  this.authTokens.push({ authToken });
+  await this.save();
+};
+
+userSchema.pre("save", async function () {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 8);
+  }
 });
 
 const User = mongoose.model("users", userSchema);

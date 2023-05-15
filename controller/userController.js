@@ -46,10 +46,9 @@ const logout = async (req, res) => {
     req.user.authTokens = req.user.authTokens.filter((authToken) => {
       return authToken.authToken !== req.authToken;
     });
-    console.log(req.user);
 
-    let updateUser = await req.user;
-    updateUser.save();
+    let deleteToken = await req.user;
+    deleteToken.save();
     res.json({ result: true, message: "deconnected" });
   } catch (e) {
     res.status(500).send();

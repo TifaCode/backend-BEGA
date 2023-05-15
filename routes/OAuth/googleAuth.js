@@ -11,14 +11,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 router.get("/success", async (req, res) => {
-  console.log(req);
+  console.log(req.cookies["connect.sid"]); //password?
   const email = userProfile.emails[0].value;
   const newUser = new User({ email, password: 1234567 }); //password ????????
   try {
     const user = await User.findOne({ email });
     if (user) {
       await user.generateAuthTokenAndSaveUser();
-      res.json({ user });
+      res.json(user);
     } else {
       await newUser.generateAuthTokenAndSaveUser();
       res.status(201).json({ newUser });

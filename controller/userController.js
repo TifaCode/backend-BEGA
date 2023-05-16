@@ -59,4 +59,9 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { signUpUser, signInUser, logout };
+//////////////////////USER PROFIL//////////////////////////////////////////////
+const userProfil = (req, res) => {
+  res.json(req.user)
+};
+
+module.exports = { signUpUser, signInUser, logout, userProfil };

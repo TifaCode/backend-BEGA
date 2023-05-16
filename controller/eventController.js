@@ -1,5 +1,6 @@
 const Event = require("../models/events");
 const User = require("../models/userModel");
+const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");
 
 const addEvent = async (req, res) => {
@@ -26,7 +27,8 @@ const findAllEvent = async (req, res) => {
 
 const findEvent = async (req, res) => {
   const { id } = req.params;
-  const event = await Event.findById(id);
+  const event = await Event.findById(id)
+  .populate("strongboxId")
 
   try {
     if (!event) res.json("Event not found");

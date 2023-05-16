@@ -1,7 +1,14 @@
 const mongoose = require("mongoose");
 
 const strongboxSchema = new mongoose.Schema({
-    creatorId: String,
+    creatorId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "users",
+        },
+    transactionId: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "transactions",
+        }],
     createdAt: { type: Date, default: Date.now },
     total: Number,
 });

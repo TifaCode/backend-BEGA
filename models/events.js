@@ -25,9 +25,9 @@ const eventSchema = new mongoose.Schema({
       ref: "todos",
     },
   ],
-  cagnotteId: {
+  strongboxId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "cagnottes",
+    ref: "strongboxes",
   },
   createdAt: { type: Date, default: Date.now },
 });

@@ -4,13 +4,13 @@ const expenseSchema = new mongoose.Schema({
     price: Number,
     userId: [
         {
-          type: mongoose.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "users",
         },
     ],
     todoId: [
         {
-          type: mongoose.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "todos",
         },
     ],

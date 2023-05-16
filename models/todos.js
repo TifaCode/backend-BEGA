@@ -8,7 +8,7 @@ const todoSchema = new mongoose.Schema({
     flagHasInvoice: Boolean,
     userId: [
         {
-          type: mongoose.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "users",
         },
       ],

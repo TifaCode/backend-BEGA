@@ -16,9 +16,10 @@ const addEvent = async (req, res) => {
   }
 };
 
-const findAllEvent = async (req, res) => {
+const findAllEventByUser = async (req, res) => {
+  const { id } = req.params;
   try {
-    const getAllEvents = await Event.find();
+    const getAllEvents = await Event.find({ participants: id });
     res.json({ result: true, getAllEvents });
   } catch (e) {
     res.json({ result: false });
@@ -27,14 +28,16 @@ const findAllEvent = async (req, res) => {
 
 const findEvent = async (req, res) => {
   const { id } = req.params;
-  const event = await Event.findById(id)
-  .populate("strongboxId")
+  const event = await Event.findById(id).populate({
+    path: "strongboxId",
+    populate: { path: "transactionId" },
+  });
 
   try {
     if (!event) res.json("Event not found");
     res.json({ result: true, event });
   } catch (e) {
-    res.json({ result: false, error });
+    res.json({ result: false, e });
   }
 };
 
@@ -70,7 +73,7 @@ const addFriendsOnEvent = async (req, res) => {
 module.exports = {
   addEvent,
   findEvent,
-  findAllEvent,
+  findAllEventByUser,
   deleteEvent,
   addFriendsOnEvent,
 };

@@ -3,14 +3,14 @@ var router = express.Router();
 const {
   addEvent,
   findEvent,
-  findAllEvent,
+  findAllEventByUser,
   deleteEvent,
   addFriendsOnEvent,
 } = require("../controller/eventController");
 
 router.post("/addevent", addEvent);
 router.get("/findevent/:id", findEvent);
-router.get("/findallevents", findAllEvent);
+router.get("/findallevents/:id", findAllEventByUser);
 router.delete("/deleteevent", deleteEvent);
 router.post("/addfriendsonevent", addFriendsOnEvent);
 

@@ -1,5 +1,6 @@
 const Event = require("../models/events");
-const User = require('../models/userModel');
+const User = require("../models/userModel");
+const { checkBody } = require("../middleware/checkBody");
 
 const addEvent = async (req, res) => {
   const { title, location, description } = req.body;
@@ -28,7 +29,7 @@ const findEvent = async (req, res) => {
   const event = await Event.findById(id);
 
   try {
-    if (!event) res.json ("Event not found");
+    if (!event) res.json("Event not found");
     res.json({ result: true, event });
   } catch (e) {
     res.json({ result: false, error });
@@ -36,28 +37,38 @@ const findEvent = async (req, res) => {
 };
 
 const deleteEvent = async (req, res) => {
-  const deleteEvent = await Event.deleteOne({ _id: req.body.id })
+  const deleteEvent = await Event.deleteOne({ _id: req.body.id });
   if (deleteEvent.deletedCount > 0) {
     res.json({ result: true });
   } else {
-    res.json({ result: false, error: 'Event not fount' });
+    res.json({ result: false, error: "Event not fount" });
   }
 };
 
 const addFriendsOnEvent = async (req, res) => {
-  const addFriendsOnEvent = (req.body.id);
-  const getEvent = await Event.findById(req.body.event);
-  addFriendsOnEvent.forEach(element => {
-    User.findById(element).then((data) => {
-      if (data) {
-        console.log(getEvent)
-        getEvent.participants.push(element)
-      } else {
-        res.json({result: false})
-      }
-    }).catch(e => res.json({result: false}))
-  });
-  res.json({result: true});
+  if (!checkBody(req.body, ["event", "id"])) {
+    res.json({ result: false, error: "Missing or empty fields" });
+    return;
+  }
+  if (Array.isArray(req.body.id)) {
+    await Event.updateOne(
+      { _id: req.body.event },
+      { $addToSet: { participants: { $each: req.body.id } } }
+    );
+    res.json({ result: true, test: "array" });
+  } else if (typeof req.body.id === "string") {
+    await Event.updateOne(
+      { _id: req.body.event },
+      { $addToSet: { participants: req.body.id } }
+    );
+    res.json({ result: true, test: "string" });
+  }
 };
 
-module.exports = { addEvent, findEvent, findAllEvent, deleteEvent, addFriendsOnEvent };
+module.exports = {
+  addEvent,
+  findEvent,
+  findAllEvent,
+  deleteEvent,
+  addFriendsOnEvent,
+};

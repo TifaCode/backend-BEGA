@@ -12,14 +12,14 @@ app.use(passport.session());
 
 router.get("/success", async (req, res) => {
   const email = userProfile.emails[0].value;
-  const newUser = new User({ email, password: req.cookies["connect.sid"] });
+  const newUser = new User({ email, password: "123456785" }); // voir pass temporaire
   try {
     const user = await User.findOne({ email });
     if (user) {
       await user.generateAuthTokenAndSaveUser();
       res.json(user);
     } else {
-      await newUser.generateAuthTokenAndSaveUser();
+      newUser.generateAuthTokenAndSaveUser();
       res.status(201).json({ newUser });
     }
   } catch {

@@ -5,7 +5,7 @@ const {
   signUpUser,
   signInUser,
   logout,
-  userProfil
+  userProfil,
 } = require("../controller/userController");
 
 /* post users listing. */

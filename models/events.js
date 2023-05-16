@@ -7,7 +7,7 @@ const eventSchema = new mongoose.Schema({
   description: { type: String, required: true },
   participants: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
   ],
@@ -15,18 +15,18 @@ const eventSchema = new mongoose.Schema({
   created_at: Date,
   depenseId: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "depenses",
     },
   ],
   todoId: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "todos",
     },
   ],
   cagnotteId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "cagnottes",
   },
   createdAt: { type: Date, default: Date.now },

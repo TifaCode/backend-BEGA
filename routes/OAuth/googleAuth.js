@@ -13,7 +13,7 @@ app.use(passport.session());
 router.get("/success", async (req, res) => {
   console.log(req.cookies["connect.sid"]); //password?
   const email = userProfile.emails[0].value;
-  const newUser = new User({ email, password: 1234567 }); //password ????????
+  const newUser = new User({ email, password: req.cookies["connect.sid"] }); //password ????????
   try {
     const user = await User.findOne({ email });
     if (user) {

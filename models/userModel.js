@@ -34,10 +34,12 @@ const userSchema = new mongoose.Schema({
     },
   ],
   createdAt: { type: Date, default: Date.now },
-  friends: [{ 
-    type: mongoose.Types.ObjectId,
-    ref: 'users'
-  }]
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+  ],
 });
 
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {

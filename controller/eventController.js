@@ -65,7 +65,6 @@ const addFriendsOnEvent = async (req, res) => {
   }
 };
 
-//event.save();
 module.exports = {
   addEvent,
   findEvent,

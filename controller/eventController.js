@@ -6,7 +6,7 @@ const { checkBody } = require("../middleware/checkBody");
 const addEvent = async (req, res) => {
   const { title, location, description, userId, role } = req.body;
   const newEvent = new Event({ title, location, description });
-  
+
   try {
     newEvent.participants.push({ id: userId, role });
     const saveEvent = newEvent;

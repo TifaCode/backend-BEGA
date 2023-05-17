@@ -1,4 +1,4 @@
-const { Event, Participant } = require("../models/events");
+const { Event } = require("../models/events");
 const User = require("../models/userModel");
 const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");
@@ -6,7 +6,7 @@ const { checkBody } = require("../middleware/checkBody");
 const addEvent = async (req, res) => {
   const { title, location, description, userId, role } = req.body;
   const newEvent = new Event({ title, location, description });
-  newEvent.participants.push({ id: userId, role });
+  newEvent.participants.push({ id: userId, role: "admin" });
 
   try {
     const saveEvent = newEvent;

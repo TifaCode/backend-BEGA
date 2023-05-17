@@ -17,10 +17,13 @@ const createTransaction = async (req, res) => {
       { _id: req.body.strongboxId },
       { $push: { transactionId: saveTransaction.id } }
     );
-    /*await Strongbox.aggregate([
-      { $group: { $sum: {total: "$transactionId"}}}
+
+    /*const totalAmount = await Strongbox.findById(req.body.strongboxId).populate('transactionId');
+    await totalAmount.aggregate([
+      { $group: { $sum: {total: '$amount'} } }
     ]);
-    console.log(Strongbox)*/
+    console.log(totalAmount)*/
+
     res.json({ result: true, saveTransaction });
   } catch {
     res.json({ result: false, error: "Cannot create this transaction" });

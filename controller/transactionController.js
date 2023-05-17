@@ -12,7 +12,7 @@ const createTransaction = async (req, res) => {
       await saveTransaction.save();
       await Strongbox.updateOne(
         { _id: req.body.strongboxId }, 
-        { $addToSet: { transaction: saveTransaction.id } })
+        { $set: { transaction: saveTransaction.id } })
       res.json({ result: true, saveTransaction });
     } catch {
       res.json({ result: false, error: "Cannot create this transaction" });

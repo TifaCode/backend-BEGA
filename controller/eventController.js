@@ -4,8 +4,9 @@ const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");
 
 const addEvent = async (req, res) => {
-  const { title, location, description } = req.body;
+  const { title, location, description, userId, role } = req.body;
   const newEvent = new Event({ title, location, description });
+  newEvent.participants.push({ id: userId, role });
 
   try {
     const saveEvent = newEvent;
@@ -56,14 +57,6 @@ const addFriendsOnEvent = async (req, res) => {
     return;
   }
   console.log(req.body.eventId, req.body.userId, typeof req.body.role);
-  // const newParticipant = new Participant({
-  //   id: req.body.userId,
-  //   role: req.body.role,
-  // });
-
-  // const event = await Event.findById(req.body.eventId);
-  // event.participants.push(newParticipant);
-  // event.save();
 
   if (Array.isArray(req.body.userId)) {
     console.log("array test");

@@ -1,4 +1,4 @@
-const { Event, Participant } = require("../models/events");
+const { Event } = require("../models/events");
 const User = require("../models/userModel");
 const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");

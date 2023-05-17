@@ -13,10 +13,10 @@ const signUpUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user)
-      return res.json({ result: false, message: "user already exist !" });
+      return res.json({ result: false, error: "user already exist !" });
 
     await newUser.generateAuthTokenAndSaveUser();
-    res.status(201).json({ user: newUser });
+    res.status(201).json({ result: true, user: newUser });
   } catch {
     res.json({ result: false, error: "Cannot create user" });
   }
@@ -31,12 +31,12 @@ const signInUser = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   try {
-    if (!user) return res.json("Connection not possible");
+    if (!user) return res.json({result: false, error: "Connection not possible"});
     const isPasswordValid = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    if (!isPasswordValid) return res.json("Connection not possible");
+    if (!isPasswordValid) return res.json({result: false, error: "Connection not possible"});
     res.json({ result: true, user });
   } catch {
     res.json({ result: false, error: "User not found" });
@@ -53,15 +53,19 @@ const logout = async (req, res) => {
 
     let deleteToken = await req.user;
     deleteToken.save();
-    res.json({ result: true, message: "deconnected" });
+    res.json({ result: true, error: "deconnected" });
   } catch (e) {
-    res.status(500).send();
+    res.status(500).send({result: false, error: "Deconnection not possible"});
   }
 };
 
 //////////////////////USER PROFIL//////////////////////////////////////////////
 const userProfil = (req, res) => {
-  res.json(req.user)
+  if (req.user) {
+    res.json({result: true, user: req.user})
+  } else {
+    res.json({result: false, error: "jsuis pas venu ici pour souffrir ok ?"})
+  }
 };
 
 module.exports = { signUpUser, signInUser, logout, userProfil };

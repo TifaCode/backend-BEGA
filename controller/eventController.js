@@ -1,4 +1,4 @@
-const Event = require("../models/events");
+const { Event, Participant } = require("../models/events");
 const User = require("../models/userModel");
 const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");
@@ -51,20 +51,45 @@ const deleteEvent = async (req, res) => {
 };
 
 const addFriendsOnEvent = async (req, res) => {
-  if (!checkBody(req.body, ["event", "id"])) {
+  if (!checkBody(req.body, ["eventId", "userId", "role"])) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
   }
-  if (Array.isArray(req.body.id)) {
+  console.log(req.body.eventId, req.body.userId, typeof req.body.role);
+  // const newParticipant = new Participant({
+  //   id: req.body.userId,
+  //   role: req.body.role,
+  // });
+
+  // const event = await Event.findById(req.body.eventId);
+  // event.participants.push(newParticipant);
+  // event.save();
+
+  if (Array.isArray(req.body.userId)) {
+    console.log("array test");
     await Event.updateOne(
-      { _id: req.body.event },
-      { $addToSet: { participants: { $each: req.body.id } } }
+      { _id: req.body.eventId },
+      {
+        $addToSet: {
+          participants: {
+            $each: { id: req.body.userId, role: req.body.role },
+          },
+        },
+      }
     );
     res.json({ result: true, test: "array" });
-  } else if (typeof req.body.id === "string") {
+  } else if (typeof req.body.userId === "string") {
+    console.log("string test");
     await Event.updateOne(
-      { _id: req.body.event },
-      { $addToSet: { participants: req.body.id } }
+      { _id: req.body.eventId },
+      {
+        $addToSet: {
+          participants: {
+            id: req.body.userId,
+            role: req.body.role,
+          },
+        },
+      }
     );
     res.json({ result: true, test: "string" });
   }

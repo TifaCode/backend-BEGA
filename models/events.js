@@ -1,16 +1,17 @@
 const mongoose = require("mongoose");
 
+const participantSchema = new mongoose.Schema({
+  _id: false,
+  id: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  role: { type: String, enum: ["admin", "moderator", "participant"] },
+});
+
 const eventSchema = new mongoose.Schema({
   title: { type: String, required: true },
   date: Date,
   location: { type: String, required: true },
   description: { type: String, required: true },
-  participants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
-    },
-  ],
+  participants: [participantSchema],
   status: Boolean,
   created_at: Date,
   depenseId: [
@@ -33,5 +34,6 @@ const eventSchema = new mongoose.Schema({
 });
 
 const Event = mongoose.model("events", eventSchema);
+const Participant = mongoose.model("participants", participantSchema);
 
-module.exports = Event;
+module.exports = { Event, Participant };

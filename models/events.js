@@ -8,8 +8,8 @@ const participantSchema = new mongoose.Schema({
 
 const eventSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  date: Date,
-  time: Date,
+  date: String,
+  time: String,
   location: { type: String, required: true },
   description: { type: String, required: true },
   participants: [participantSchema],

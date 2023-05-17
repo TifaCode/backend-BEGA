@@ -15,8 +15,12 @@ const createTransaction = async (req, res) => {
     await saveTransaction.save();
     await Strongbox.updateOne(
       { _id: req.body.strongboxId },
-      { $set: { transactionId: saveTransaction.id } }
+      { $push: { transactionId: saveTransaction.id } }
     );
+    /*await Strongbox.aggregate([
+      { $group: { $sum: {total: "$transactionId"}}}
+    ]);
+    console.log(Strongbox)*/
     res.json({ result: true, saveTransaction });
   } catch {
     res.json({ result: false, error: "Cannot create this transaction" });

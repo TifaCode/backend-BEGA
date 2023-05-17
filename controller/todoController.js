@@ -21,7 +21,7 @@ const addTodo = async (req, res) => {
     );
     res.json({ result: true, saveTodo });
   } catch (e) {
-    res.json({ error: "impossible de creer une Todo ok ?" });
+    res.json({ result: false, error: "impossible de creer une Todo ok ?" });
   }
 };
 
@@ -31,7 +31,7 @@ const getAllTodo = async (req, res) => {
 
   try {
     console.log(getAllTodo);
-    res.json({ getAllTodo });
+    res.json({ result: true, getAllTodo });
   } catch (e) {
     res.json({ result: false, error: "impossible d'afficher les todos" });
   }
@@ -49,7 +49,7 @@ const updateTodo = async (req, res) => {
         },
       }
     );
-    res.json({ result: true });
+    res.json({ result: true, error: "To Do is updated" });
   } catch (e) {
     res.json({ result: false, error: "parle a ma main ok !?" });
   }
@@ -59,7 +59,7 @@ const deleteTodo = async (req, res) => {
   try {
     const deleteTodo = await Todo.deleteOne({ _id: req.body.todoId });
     if (deleteTodo.deletedCount > 0) {
-      res.json({ result: true });
+      res.json({ result: true, error: "To Do is deleted" });
     } else {
       res.json({ result: false, error: "impossible de supprimer" });
     }

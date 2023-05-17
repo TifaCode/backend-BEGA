@@ -55,16 +55,16 @@ const logout = async (req, res) => {
     deleteToken.save();
     res.json({ result: true, error: "deconnected" });
   } catch (e) {
-    res.status(500).send({result: false, error: "Deconnection not possible"});
+    res.status(500).send({ result: false, error: "Deconnection not possible" });
   }
 };
 
 //////////////////////USER PROFIL//////////////////////////////////////////////
 const userProfil = (req, res) => {
   if (req.user) {
-    res.json({result: true, user: req.user})
+    res.json({ result: true, user: req.user })
   } else {
-    res.json({result: false, error: "jsuis pas venu ici pour souffrir ok ?"})
+    res.json({ result: false, error: "jsuis pas venu ici pour souffrir ok ?" })
   }
 };
 

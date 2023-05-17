@@ -19,5 +19,5 @@ const createStrongbox = async (req, res) => {
   };
 
   module.exports = {
-    createStrongbox,
+    createStrongbox
   };

@@ -9,9 +9,9 @@ const {
 } = require("../controller/userController");
 
 /* post users listing. */
-router.post("/signup", signUpUser);
-router.post("/signin", signInUser);
-router.post("/logout", authentication, logout);
-router.get("/userprofil", authentication, userProfil);
+router.post("/signup", signUpUser); //req.body.email;
+router.post("/signin", signInUser); //req.body.email;
+router.post("/logout", authentication, logout); //req.user.authTokens;
+router.get("/userprofil", authentication, userProfil); //req.user;
 
 module.exports = router;

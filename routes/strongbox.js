@@ -5,6 +5,6 @@ const {
     createStrongbox,
 } = require("../controller/strongboxController");
 
-router.post("/createstrongbox", createStrongbox);
+router.post("/createstrongbox", createStrongbox); //req.body.creatorId, req.body.eventId;
 
 module.exports = router;

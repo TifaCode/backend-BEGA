@@ -8,8 +8,8 @@ const addEvent = async (req, res) => {
   const newEvent = new Event({ title, location, description });
   
   try {
-    const saveEvent = newEvent;
     newEvent.participants.push({ id: userId, role });
+    const saveEvent = newEvent;
     await saveEvent.save();
     res.json({ result: true, newEvent });
   } catch {
@@ -35,7 +35,7 @@ const findEvent = async (req, res) => {
       path: "strongboxId",
       populate: { path: "transactionId" },
     });
-    if (!event) res.json({result: false, error: "Event not found"});
+    if (!event) res.json({ result: false, error: "Event not found" });
     res.json({ result: true, event });
   } catch (e) {
     res.json({ result: false, error: "Event not found" });
@@ -81,7 +81,7 @@ const addFriendsOnEvent = async (req, res) => {
         },
       }
     );
-    res.json({ result: true, error: "Friend invited"});
+    res.json({ result: true, error: "Friend invited" });
   }
 };
 

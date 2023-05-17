@@ -8,10 +8,10 @@ const {
   addFriendsOnEvent,
 } = require("../controller/eventController");
 
-router.post("/addevent", addEvent);
-router.get("/findevent/:id", findEvent);
-router.get("/findallevents/:id", findAllEventByUser);
-router.delete("/deleteevent", deleteEvent);
-router.post("/addfriendsonevent", addFriendsOnEvent);
+router.post("/addevent", addEvent); //req.body.title, req.body.location, req.body.description, req.body.userId, req.body.role;
+router.get("/findevent/:id", findEvent); //req.params.id;
+router.get("/findallevents/:id", findAllEventByUser); //req.params.id;
+router.delete("/deleteevent", deleteEvent); //req.body.id;
+router.post("/addfriendsonevent", addFriendsOnEvent); //req.body.userId, req.body.role, req.body.eventId;
 
 module.exports = router;

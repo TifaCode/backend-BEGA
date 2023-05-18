@@ -34,7 +34,7 @@ const signInUser = async (req, res) => {
     res.json({ user });
     const isPassword = await bcrypt.compare(req.body.password, user.password);
   } catch (e) {
-    res.status(400).json({ error: "fuckit" });
+    res.json({ error: "fuckit" });
   }
 };
 

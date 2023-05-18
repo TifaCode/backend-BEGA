@@ -27,9 +27,8 @@ const signInUser = async (req, res) => {
     return;
   }
   const user = await User.findOne({ email: req.body.email });
-
-  await user.generateAuthTokenAndSaveUser();
-  res.json({ user });
+  const authToken = await user.generateAuthTokenAndSaveUser();
+  res.json({ user, authToken });
 };
 //////////////////////LOGOUT//////////////////////////////////////////////
 

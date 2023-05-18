@@ -10,10 +10,8 @@ const addEvent = async (req, res) => {
   try {
     newEvent.participants.push({ userId, role });
     const saveEvent = newEvent;
-    console.log(saveEvent);
-    saveEvent.save().then(() => {
-      console.log("test");
-    });
+
+    await saveEvent.save();
     res.json({ result: true, saveEvent });
   } catch {
     res.json({ result: false, error: "Cannot create event" });
@@ -22,12 +20,8 @@ const addEvent = async (req, res) => {
 
 const findAllEventByUser = async (req, res) => {
   const { id } = req.params;
-  try {
-    const getAllEvents = await Event.find({ participants: id });
-    res.json({ result: true, getAllEvents });
-  } catch (e) {
-    res.json({ result: false, error: "Cannot get all events" });
-  }
+  const events = await Event.find({ "participants.userId": id });
+  res.json({ result: true, events });
 };
 
 const findEvent = async (req, res) => {
@@ -92,9 +86,14 @@ const updateEvent = async (req, res) => {
   const { title, location, description, eventId } = req.body;
 
   try {
-    await Event.updateOne({_id: eventId}, {
-    title, location, description
-    });
+    await Event.updateOne(
+      { _id: eventId },
+      {
+        title,
+        location,
+        description,
+      }
+    );
     res.json({ result: true, error: "Event updated" });
   } catch {
     res.json({ result: false, error: "Cannot create event" });

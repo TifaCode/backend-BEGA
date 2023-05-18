@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
 const participantSchema = new mongoose.Schema({
-  _id: false,
-  id: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   role: { type: String, enum: ["admin", "moderator", "participant"] },
 });
 

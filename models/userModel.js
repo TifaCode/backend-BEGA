@@ -10,12 +10,13 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: "Already exist !",
     validate(v) {
       if (!validator.isEmail(v)) throw new Error("email non valide");
     },
   },
   password: {
+    select: false,
     type: String,
     required: true,
     validate(v) {

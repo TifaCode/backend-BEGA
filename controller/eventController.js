@@ -8,10 +8,13 @@ const addEvent = async (req, res) => {
   const newEvent = new Event({ title, location, description });
 
   try {
-    newEvent.participants.push({ id: userId, role });
+    newEvent.participants.push({ userId, role });
     const saveEvent = newEvent;
-    await saveEvent.save();
-    res.json({ result: true, newEvent });
+    console.log(saveEvent);
+    saveEvent.save().then(() => {
+      console.log("test");
+    });
+    res.json({ result: true, saveEvent });
   } catch {
     res.json({ result: false, error: "Cannot create event" });
   }

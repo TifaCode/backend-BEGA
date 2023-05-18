@@ -88,10 +88,24 @@ const addFriendsOnEvent = async (req, res) => {
   }
 };
 
+const updateEvent = async (req, res) => {
+  const { title, location, description, eventId } = req.body;
+
+  try {
+    await Event.updateOne({_id: eventId}, {
+    title, location, description
+    });
+    res.json({ result: true, error: "Event updated" });
+  } catch {
+    res.json({ result: false, error: "Cannot create event" });
+  }
+};
+
 module.exports = {
   addEvent,
   findEvent,
   findAllEventByUser,
   deleteEvent,
   addFriendsOnEvent,
+  updateEvent,
 };

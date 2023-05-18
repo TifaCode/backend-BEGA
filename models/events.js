@@ -18,7 +18,7 @@ const eventSchema = new mongoose.Schema({
   depenseId: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "depenses",
+      ref: "expenses",
     },
   ],
   todoId: [

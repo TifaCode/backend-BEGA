@@ -1,4 +1,4 @@
-const Event = require("../models/events");
+const { Event } = require("../models/events");
 const User = require("../models/userModel");
 const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");
@@ -22,6 +22,18 @@ const createStrongbox = async (req, res) => {
   }
 };
 
+const getStrongboxByEvent = async (req, res) => {
+  const { eventId } = req.params;
+  const strongboxEvent = await Event.findById(eventId).populate("strongboxId");
+  if (strongboxEvent) {
+    const resultStronbox = await strongboxEvent.strongboxId.populate(
+      "transactionId"
+    );
+    res.json({ result: true, strongbox: resultStronbox });
+  } else res.json({ result: false });
+};
+
 module.exports = {
   createStrongbox,
+  getStrongboxByEvent,
 };

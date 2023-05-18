@@ -12,8 +12,7 @@ const signUpUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (user)
-      return res.json({ result: false, error: "user already exist !" });
+    if (user) return res.json({ result: false, error: "user already exist !" });
 
     await newUser.generateAuthTokenAndSaveUser();
     res.status(201).json({ result: true, user: newUser });
@@ -29,14 +28,17 @@ const signInUser = async (req, res) => {
   }
 
   const user = await User.findOne({ email: req.body.email });
+  console.log(user);
 
   try {
-    if (!user) return res.json({result: false, error: "Connection not possible"});
+    if (!user)
+      return res.json({ result: false, error: "Connection not possible" });
     const isPasswordValid = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    if (!isPasswordValid) return res.json({result: false, error: "Connection not possible"});
+    if (!isPasswordValid)
+      return res.json({ result: false, error: "Connection not possible" });
     res.json({ result: true, user });
   } catch {
     res.json({ result: false, error: "User not found" });
@@ -62,9 +64,9 @@ const logout = async (req, res) => {
 //////////////////////USER PROFIL//////////////////////////////////////////////
 const userProfil = (req, res) => {
   if (req.user) {
-    res.json({ result: true, user: req.user })
+    res.json({ result: true, user: req.user });
   } else {
-    res.json({ result: false, error: "jsuis pas venu ici pour souffrir ok ?" })
+    res.json({ result: false, error: "jsuis pas venu ici pour souffrir ok ?" });
   }
 };
 

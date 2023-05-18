@@ -26,18 +26,11 @@ const signInUser = async (req, res) => {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
   }
+  const user = await User.findOne({ email: req.body.email });
 
-  try {
-    const user = await User.findOne({ email: req.body.email });
-
-    await user.generateAuthTokenAndSaveUser();
-    res.json({ user });
-    const isPassword = await bcrypt.compare(req.body.password, user.password);
-  } catch (e) {
-    res.json({ error: "fuckit" });
-  }
+  await user.generateAuthTokenAndSaveUser();
+  res.json({ user });
 };
-
 //////////////////////LOGOUT//////////////////////////////////////////////
 
 const logout = async (req, res) => {

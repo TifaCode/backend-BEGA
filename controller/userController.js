@@ -26,26 +26,15 @@ const signInUser = async (req, res) => {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
   }
-  console.log(req.body.email)
 
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      res.json({ result: false, error: "Connection not possible" });
-    } else {
-      const isPasswordValid = await bcrypt.compare(
-        req.body.password,
-        user.password
-      );
-      console.log(isPasswordValid)
-      if (!isPasswordValid) {
-        res.json({ result: false, error: "Connection not possible" })
-      } else {
-        res.json({ result: true, user })
-      }
-    }
-  } catch {
-    res.json({ result: false, error: "User not found" });
+
+    await user.generateAuthTokenAndSaveUser();
+    res.json({ user });
+    const isPassword = await bcrypt.compare(req.body.password, user.password);
+  } catch (e) {
+    res.status(400).json({ error: "fuckit" });
   }
 };
 

@@ -27,6 +27,10 @@ const signInUser = async (req, res) => {
     return;
   }
   const user = await User.findOne({ email: req.body.email });
+  if (!user) res.json({ result: false, error: "no user" });
+  const isPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!isPassword)
+    res.json({ result: false, error: "Impossible de se connecter" });
   const authToken = await user.generateAuthTokenAndSaveUser();
   res.json({ user, authToken });
 };

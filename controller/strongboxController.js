@@ -33,7 +33,21 @@ const getStrongboxByEvent = async (req, res) => {
   } else res.json({ result: false });
 };
 
+const deleteStrongbox = async (req, res) => {
+  try {
+    const deleteStrongbox = await Strongbox.deleteOne({ _id: req.body.strongboxId });
+    if (deleteStrongbox.deletedCount > 0) {
+      res.json({ result: true, error: "Strongbox is deleted" });
+    } else {
+      res.json({ result: false, error: "Delete strongbox is not possible" });
+    }
+  } catch (e) {
+    res.json({ result: false, error: "Delete strongbox is not possible" });
+  }
+};
+
 module.exports = {
   createStrongbox,
   getStrongboxByEvent,
+  deleteStrongbox,
 };

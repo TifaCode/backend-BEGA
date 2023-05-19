@@ -25,7 +25,8 @@ const signInUser = async (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
-  }
+  } else if (req.body.password === null)
+    res.json({ result: true, error: "merci de rentrer un mdp" });
   const user = await User.findOne({ email: req.body.email });
   if (!user) res.json({ result: false, error: "no user" });
   const isPassword = await bcrypt.compare(req.body.password, user.password);
@@ -43,7 +44,7 @@ const logout = async (req, res) => {
     });
 
     let deleteToken = await req.user;
-    deleteToken.save();
+    await deleteToken.save();
     res.json({ result: true, error: "deconnected" });
   } catch (e) {
     res.status(500).send({ result: false, error: "Deconnection not possible" });

@@ -62,19 +62,25 @@ const userProfil = (req, res) => {
 //////////////////////UPDATE PROFIL//////////////////////////////////////////////
 
 const updateProfil = async (req, res) => {
-  console.log(req.body);
-  const { userId, firstname, lastname, email } = req.body;
+  const { firstname, lastname, email } = req.body;
 
-  const user = User.find({ _id: userId });
+  const user = User.find(req.user.userId);
   if (!user) {
-    res.json({ resul: false, error: " Impossible a modifier " });
-  } else {
-    let password = await bcrypt.hash(req.body.password, 5);
+    res.json({ result: false, error: " Impossible a modifier " });
+  } else if (req.body.password !== "") {
+    let newPassword = await bcrypt.hash(req.body.password, 5);
     await user.updateOne({
       firstname,
       lastname,
       email,
-      password,
+      password: newPassword,
+    });
+    res.json({ result: true, error: "Porfil modifié" });
+  } else {
+    await user.updateOne({
+      firstname,
+      lastname,
+      email,
     });
     res.json({ result: true, error: "Porfil modifié" });
   }

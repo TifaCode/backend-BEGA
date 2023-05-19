@@ -59,4 +59,24 @@ const userProfil = (req, res) => {
   }
 };
 
-module.exports = { signUpUser, signInUser, logout, userProfil };
+//////////////////////UPDATE PROFIL//////////////////////////////////////////////
+
+const updateProfil = async (req, res) => {
+  const { userId, firstname, lastname, email } = req.body;
+
+  const user = User.find({ _id: userId });
+  if (!user) {
+    res.json({ resul: false, error: " Impossible a modifier " });
+  } else {
+    let password = await bcrypt.hash(req.body.password, 5);
+    await user.updateOne({
+      firstname,
+      lastname,
+      email,
+      password,
+    });
+    res.json({ result: true, error: "Porfil modifié" });
+  }
+};
+
+module.exports = { signUpUser, signInUser, logout, userProfil, updateProfil };

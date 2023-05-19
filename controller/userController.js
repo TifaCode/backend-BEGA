@@ -62,6 +62,7 @@ const userProfil = (req, res) => {
 //////////////////////UPDATE PROFIL//////////////////////////////////////////////
 
 const updateProfil = async (req, res) => {
+  console.log(req.body);
   const { userId, firstname, lastname, email } = req.body;
 
   const user = User.find({ _id: userId });

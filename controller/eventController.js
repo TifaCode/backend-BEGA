@@ -40,7 +40,7 @@ const findEvent = async (req, res) => {
 };
 
 const deleteEvent = async (req, res) => {
-  const deleteEvent = await Event.deleteOne({ _id: req.body.id });
+  const deleteEvent = await Event.deleteOne({ _id: req.body.eventId });
   if (deleteEvent.deletedCount > 0) {
     res.json({ result: true, error: "Event deleted" });
   } else {

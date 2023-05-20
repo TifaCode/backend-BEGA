@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
       authToken: {
         type: String,
         required: true,
+        expires: 86400,
       },
     },
   ],
@@ -40,6 +41,7 @@ const userSchema = new mongoose.Schema({
       ref: "users",
     },
   ],
+  tokenPasswordReset: { type: String, default: Date.now, expires: 60 },
 });
 
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {

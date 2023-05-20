@@ -89,13 +89,16 @@ const updateProfil = async (req, res) => {
   }
 };
 /////////////////////////////////////Reset password////////////////////////////
-const emailSentToresetPassword = async (req, res) => {
+const emailSentToResetPassword = async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) res.json({ result: false, error: "pas d'utilisateur" });
     else {
-      const link = `http://localhost:3001/mailresetpassword/${user._id}`; //urlfront
+      let token = uuidv4();
+      user.tokenPasswordReset = token;
+      user.save();
+      const link = `http://localhost:3001/mailresetpassword/${user._id}/${token}`; //urlfront
       sendEmail(email, "reset your password", link);
       res.json({
         result: true,
@@ -106,19 +109,22 @@ const emailSentToresetPassword = async (req, res) => {
     res.json({ result: false, error: "Impossible" });
   }
 };
-/////////////////le front doit récuprer le params de l'url et le mettre dans l'url
+/////////////////le front doit récuprer les params de l'url et les envoyer au back
 const resetPasswordFromEmail = async (req, res) => {
-  const { userId } = req.params;
-  let newPassword = await bcrypt.hash(req.body.password, 5);
+  const { userId, token } = req.params;
+
   try {
-    const user = await User.findById(userId);
-    if (!user) res.json({ result: false, error: "impossible a modifier" });
+    const user = await User.findOne({ tokenPasswordReset: token, _id: userId });
+    if (!user) res.json({ result: false, error: "impossible" });
     else {
+      let newPassword = await bcrypt.hash(req.body.password, 5);
       await user.updateOne({ password: newPassword });
+      user.tokenPasswordReset = undefined;
+      user.save();
       res.json({ result: true, error: "modified" });
     }
   } catch (error) {
-    res.json({ resul: false, error: "Impossible" });
+    res.json({ result: false, error: "Impossible" });
   }
 };
 ///////////////////////////////////////////////////////////////////////////
@@ -128,6 +134,6 @@ module.exports = {
   logout,
   userProfil,
   updateProfil,
-  emailSentToresetPassword,
+  emailSentToResetPassword,
   resetPasswordFromEmail,
 };

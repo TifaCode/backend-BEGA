@@ -96,7 +96,7 @@ const emailSentToresetPassword = async (req, res) => {
     if (!user) res.json({ result: false, error: "pas d'utilisateur" });
     else {
       const link = `http://localhost:3001/mailresetpassword/${user._id}`; //urlfront
-      sendEmail("yota68@msn.com", "reset your password", link);
+      sendEmail(email, "reset your password", link);
       res.json({
         result: true,
         error: "a link sent to reset your email password",
@@ -109,7 +109,6 @@ const emailSentToresetPassword = async (req, res) => {
 /////////////////le front doit récuprer le params de l'url et le mettre dans l'url
 const resetPasswordFromEmail = async (req, res) => {
   const { userId } = req.params;
-  const { password } = req.body;
   let newPassword = await bcrypt.hash(req.body.password, 5);
   try {
     const user = await User.findById(userId);

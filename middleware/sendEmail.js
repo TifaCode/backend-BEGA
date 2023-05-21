@@ -8,13 +8,13 @@ const sendEmail = async (email, subject, text) => {
       ciphers: "SSLv3",
     },
     auth: {
-      user: "begaevents@outlook.fr", // dans .env
-      pass: "JHm*g*$u&Nxrc8g6Wkvv", // dans .env
+      user: process.env.TRANSMITTER, // dans .env
+      pass: process.env.NODE_MAILER_KEY, // dans .env
     },
   });
 
   const mailOptions = {
-    from: "begaevents@outlook.fr", // email de l'emetteur a mettre dans .env
+    from: process.env.TRANSMITTER, // email de l'emetteur a mettre dans .env
     to: email, // email du destinataire
     subject: subject, // titre du mail
     text: text, // message du mail

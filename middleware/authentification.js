@@ -8,7 +8,7 @@ const authentication = async (req, res, next) => {
     const user = await User.findOne({
       _id: decodedToken._id,
       "authTokens.authToken": authToken,
-    });
+    }).select({ password: 0 });
 
     if (!user) throw new Error("pb token");
 

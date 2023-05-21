@@ -56,6 +56,7 @@ const logout = async (req, res) => {
 //////////////////////USER PROFIL//////////////////////////////////////////////
 const userProfil = (req, res) => {
   if (req.user) {
+    req.user.select = false;
     res.json({ result: true, user: req.user });
   } else {
     res.json({ result: false, error: "jsuis pas venu ici pour souffrir ok ?" });

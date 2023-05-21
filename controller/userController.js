@@ -112,7 +112,6 @@ const emailSentToResetPassword = async (req, res) => {
 /////////////////le front doit récuprer les params de l'url et les envoyer au back
 const resetPasswordFromEmail = async (req, res) => {
   const { userId, token } = req.params;
-
   try {
     const user = await User.findOne({ tokenPasswordReset: token, _id: userId });
     if (!user) res.json({ result: false, error: "Impossible" });

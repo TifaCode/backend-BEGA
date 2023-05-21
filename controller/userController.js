@@ -98,7 +98,7 @@ const emailSentToResetPassword = async (req, res) => {
       let token = uuidv4();
       user.tokenPasswordReset = token;
       user.save();
-      const link = `http://localhost:3001/mailresetpassword/${user._id}/${token}`; //urlfront
+      const link = `https://resetpasswordbega.vercel.app/${user._id}/${token}`; //urlfront
       sendEmail(email, "reset your password", link);
       res.json({
         result: true,
@@ -115,13 +115,13 @@ const resetPasswordFromEmail = async (req, res) => {
 
   try {
     const user = await User.findOne({ tokenPasswordReset: token, _id: userId });
-    if (!user) res.json({ result: false, error: "impossible" });
+    if (!user) res.json({ result: false, error: "Impossible" });
     else {
       let newPassword = await bcrypt.hash(req.body.password, 5);
       await user.updateOne({ password: newPassword });
       user.tokenPasswordReset = undefined;
       user.save();
-      res.json({ result: true, error: "modified" });
+      res.json({ result: true, error: "Modified" });
     }
   } catch (error) {
     res.json({ result: false, error: "Impossible" });

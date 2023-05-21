@@ -41,7 +41,10 @@ const userSchema = new mongoose.Schema({
       ref: "users",
     },
   ],
-  tokenPasswordReset: { type: String, default: Date.now, expires: 60 },
+  tokenPasswordReset: {
+    type: String,
+    expires: { default: Date.now, type: Date, expireAfterSeconds: 300 },
+  },
 });
 
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {

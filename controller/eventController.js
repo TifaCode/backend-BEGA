@@ -28,10 +28,12 @@ const findEvent = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const event = await Event.findById(id).populate({
-      path: "strongboxId",
-      populate: { path: "transactionId" },
-    });
+    const event = await Event.findById(id)
+      .populate({
+        path: "strongboxId",
+        populate: { path: "transactionId" },
+      })
+      .populate({ path: "todoId", populate: { path: "userId" } });
     if (!event) res.json({ result: false, error: "Event not found" });
     res.json({ result: true, event });
   } catch (e) {

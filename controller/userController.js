@@ -69,12 +69,12 @@ const userProfil = (req, res) => {
 //////////////////////UPDATE PROFIL//////////////////////////////////////////////
 
 const updateProfil = async (req, res) => {
-  const { firstname, lastname, email } = req.body;
-
-  const user = User.find(req.user.userId);
+  const { firstname, lastname, email, userId, password } = req.body;
+  const user = await User.findById(userId);
+  console.log(user);
   if (!user) {
     res.json({ result: false, error: " Impossible a modifier " });
-  } else if (req.body.password !== "") {
+  } else if (password !== "") {
     let newPassword = await bcrypt.hash(req.body.password, 5);
     await user.updateOne({
       firstname,

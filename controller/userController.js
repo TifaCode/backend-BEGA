@@ -127,7 +127,20 @@ const resetPasswordFromEmail = async (req, res) => {
     res.json({ result: false, error: "Impossible" });
   }
 };
+/////////////////////////////Friends//////////////////////////////////////////////
+const getFriends = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId).populate("friends");
+    if (!user) res.json({ result: false, error: "Pas d'amis" });
+    res.json({ user });
+  } catch (error) {
+    res.json({ result: false, error: "impossible" });
+  }
+};
 ///////////////////////////////////////////////////////////////////////////
+
 module.exports = {
   signUpUser,
   signInUser,
@@ -136,4 +149,5 @@ module.exports = {
   updateProfil,
   emailSentToResetPassword,
   resetPasswordFromEmail,
+  getFriends,
 };

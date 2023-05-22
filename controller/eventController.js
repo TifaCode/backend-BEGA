@@ -15,7 +15,7 @@ const addEvent = async (req, res) => {
     res.json({ result: true, saveEvent });
   } catch {
     res.json({ result: false, error: "Cannot create event" });
-  } res.json({ result: "test"})
+  } 
 };
 
 const findAllEventByUser = async (req, res) => {

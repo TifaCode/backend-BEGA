@@ -10,12 +10,12 @@ const addEvent = async (req, res) => {
   try {
     newEvent.participants.push({ userId, role });
     const saveEvent = newEvent;
-
     await saveEvent.save();
     res.json({ result: true, saveEvent });
   } catch {
     res.json({ result: false, error: "Cannot create event" });
   }
+  res.json({ result: false, error: "Impossible" });
 };
 
 const findAllEventByUser = async (req, res) => {

@@ -27,15 +27,18 @@ const signInUser = async (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
-  } else if (req.body.password === null)
-    res.json({ result: true, error: "merci de rentrer un mdp" });
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) res.json({ result: false, error: "no user" });
-  const isPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!isPassword)
-    res.json({ result: false, error: "Impossible de se connecter" });
-  const authToken = await user.generateAuthTokenAndSaveUser();
-  res.json({ user, authToken });
+  }
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) res.json({ result: false, error: "no user" });
+    const isPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!isPassword)
+      res.json({ result: false, error: "Impossible de se connecter" });
+    const authToken = await user.generateAuthTokenAndSaveUser();
+    res.json({ user, authToken });
+  } catch (error) {
+    res.json({ result: false, error: "impossible" });
+  }
 };
 //////////////////////LOGOUT//////////////////////////////////////////////
 

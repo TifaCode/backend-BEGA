@@ -6,16 +6,16 @@ const { checkBody } = require("../middleware/checkBody");
 const addEvent = async (req, res) => {
   const { title, location, description, userId, role } = req.body;
   const newEvent = new Event({ title, location, description });
-
+  console.log(userId, role);
   try {
     newEvent.participants.push({ userId, role });
     const saveEvent = newEvent;
     await saveEvent.save();
     res.json({ result: true, saveEvent });
+    return;
   } catch {
     res.json({ result: false, error: "Cannot create event" });
   }
-  res.json({ result: false, error: "Impossible" });
 };
 
 const findAllEventByUser = async (req, res) => {

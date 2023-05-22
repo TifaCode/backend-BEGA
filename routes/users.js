@@ -9,6 +9,7 @@ const {
   updateProfil,
   emailSentToResetPassword,
   resetPasswordFromEmail,
+  getFriends,
 } = require("../controller/userController");
 
 /* post users listing. */
@@ -19,5 +20,6 @@ router.get("/userprofil", authentication, userProfil); //req.user;
 router.post("/updateprofil", authentication, updateProfil); // req.body.userId, req.bodyfirstname, req.bodylastname, req.body.email, req.body.password
 router.post("/resetpassword", emailSentToResetPassword); // req.body.email, envoi email
 router.post("/mailresetpassword/:userId/:token", resetPasswordFromEmail); // req.body.password, reset password
+router.get("/getfriends/:userId", getFriends);
 
 module.exports = router;

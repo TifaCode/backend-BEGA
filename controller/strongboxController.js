@@ -24,13 +24,18 @@ const createStrongbox = async (req, res) => {
 
 const getStrongboxByEvent = async (req, res) => {
   const { eventId } = req.params;
-  const strongboxEvent = await Event.findById(eventId).populate("strongboxId");
-  if (strongboxEvent) {
-    const resultStronbox = await strongboxEvent.strongboxId.populate(
-      "transactionId"
-    );
-    res.json({ result: true, strongbox: resultStronbox });
-  } else res.json({ result: false });
+  const strongboxEvent = await Event.findById(eventId).populate({
+    path: "strongboxId",
+    populate: { 
+      path: "transactionId", 
+      populate: { 
+        path: "userId" ,
+        select:"firstname -_id" 
+      }
+    },
+  });
+
+  res.json({ result: true, strongbox: strongboxEvent });
 };
 
 module.exports = {

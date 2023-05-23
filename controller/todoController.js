@@ -1,5 +1,6 @@
 const Todo = require("../models/todos");
 const { Event } = require("../models/events");
+const { get } = require("mongoose");
 
 const addTodo = async (req, res) => {
   const { description, taskName, eventId } = req.body;
@@ -30,7 +31,6 @@ const getAllTodo = async (req, res) => {
   const getAllTodo = await Event.findById(eventId).populate("todoId");
 
   try {
-    console.log(getAllTodo);
     res.json({ result: true, getAllTodo });
   } catch (e) {
     res.json({ result: false, error: "impossible d'afficher les todos" });

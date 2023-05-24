@@ -11,13 +11,17 @@ const createTransaction = async (req, res) => {
   });
 
   try {
-    const saveTransaction = newTransaction;
-    await saveTransaction.save();
+    const saveTransaction = await newTransaction.save();
+    // await saveTransaction.save();
     await Strongbox.updateOne(
       { _id: req.body.strongboxId },
       { $push: { transactionId: saveTransaction.id } }
     );
-    res.json({ result: true, saveTransaction });
+    const transactionData = await Transaction.findById(saveTransaction.id).populate({
+      path: "userId",
+      select: "firstname -_id",
+    });
+    res.json({ result: true, saveTransaction : transactionData });
   } catch {
     res.json({ result: false, error: "Cannot create this transaction" });
   }

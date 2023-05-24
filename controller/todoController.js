@@ -36,20 +36,32 @@ const getAllTodo = async (req, res) => {
     res.json({ result: false, error: "impossible d'afficher les todos" });
   }
 };
-
+/////////add or delete user on todo////////////////////////////
 const updateTodo = async (req, res) => {
   const { isDone, userId, todoId } = req.body;
+  const isExistUser = await Todo.findOne({ _id: todoId, userId });
+  console.log("user:", isExistUser);
   try {
-    await Todo.updateOne(
-      { _id: todoId },
-      {
-        isDone,
-        $addToSet: {
-          userId: { $each: [userId] },
-        },
-      }
-    );
-    res.json({ result: true, error: "To Do is updated" });
+    if (!isExistUser) {
+      await Todo.updateOne(
+        { _id: todoId },
+        {
+          isDone,
+          $addToSet: {
+            userId: { $each: [userId] },
+          },
+        }
+      );
+      return res.json({ result: true, error: "To Do is updated" });
+    } else {
+      await Todo.updateOne(
+        { _id: todoId },
+        {
+          $pull: { userId: userId },
+        }
+      ).then(() => console.log("deleted"));
+    }
+    res.json({ result: true, error: "User deleted" });
   } catch (e) {
     res.json({ result: false, error: "parle a ma main ok !?" });
   }

@@ -33,7 +33,11 @@ const findEvent = async (req, res) => {
         path: "strongboxId",
         populate: { path: "transactionId" },
       })
-      .populate({ path: "todoId", populate: { path: "userId" } });
+      .populate({
+        path: "todoId",
+        populate: { path: "userId" },
+      });
+
     if (!event) res.json({ result: false, error: "Event not found" });
     res.json({ result: true, event });
   } catch (e) {

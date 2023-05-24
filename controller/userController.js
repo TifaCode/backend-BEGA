@@ -17,9 +17,9 @@ const signUpUser = async (req, res) => {
     if (user) return res.json({ result: false, error: "user already exist !" });
 
     await newUser.generateAuthTokenAndSaveUser();
-    res.status(201).json({ result: true, user: newUser });
+    return res.status(201).json({ result: true, user: newUser });
   } catch {
-    res.json({ result: false, error: "Cannot create user" });
+    return res.json({ result: false, error: "Cannot create user" });
   }
 };
 ////////////////////SIGNIN////////////////////////////////////////////////////
@@ -33,11 +33,11 @@ const signInUser = async (req, res) => {
     if (!user) res.json({ result: false, error: "no user" });
     const isPassword = await bcrypt.compare(req.body.password, user.password);
     if (!isPassword)
-      res.json({ result: false, error: "Impossible de se connecter" });
+      return res.json({ result: false, error: "Impossible de se connecter" });
     const authToken = await user.generateAuthTokenAndSaveUser();
     res.json({ user, authToken });
   } catch (error) {
-    res.json({ result: false, error: "impossible" });
+    return res.json({ result: false, error: "impossible" });
   }
 };
 //////////////////////LOGOUT//////////////////////////////////////////////
@@ -74,7 +74,7 @@ const updateProfil = async (req, res) => {
   console.log(user);
   if (!user) {
     res.json({ result: false, error: " Impossible a modifier " });
-  } else if (password !== "") {
+  } else if (password !== "" || password !== null) {
     let newPassword = await bcrypt.hash(req.body.password, 5);
     await user.updateOne({
       firstname,

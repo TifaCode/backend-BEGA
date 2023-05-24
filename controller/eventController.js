@@ -4,8 +4,8 @@ const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");
 
 const addEvent = async (req, res) => {
-  const { title, location, description, userId, role } = req.body;
-  const newEvent = new Event({ title, location, description });
+  const { title, location, description, userId, role, date } = req.body;
+  const newEvent = new Event({ title, location, description, date });
   console.log(userId, role);
   try {
     newEvent.participants.push({ userId, role });

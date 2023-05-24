@@ -9,7 +9,7 @@ const {
 } = require("../controller/todoController");
 
 router.post("/addtodo", addTodo); //req.body.description, req.body.taskName, req.body.eventId;
-router.put("/updatetodo", updateTodo);  //req.body.isDone, req.body.userId, req.body.todoId;
+router.post("/updatetodo", updateTodo); //req.body.isDone, req.body.userId, req.body.todoId;
 router.delete("/deletetodo", deleteTodo); //req.body.todoId;
 router.get("/getalltodo/:eventId", getAllTodo); //req.params.eventId;
 

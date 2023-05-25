@@ -142,7 +142,20 @@ const getFriends = async (req, res) => {
     res.json({ result: false, error: "impossible" });
   }
 };
-///////////////////////////////////////////////////////////////////////////
+/////////////////////////////Delete Profil/////////////////////////////////////////
+const deleteProfil = async (req, res) => {
+  try {
+    const deleteUser = await User.deleteOne({ email: req.body.email })
+    if (deleteUser.deletedCount > 0) {
+      return res.json({ result: true, error: "User deleted" });
+    } else {
+      return res.json({ result: false, error: "User not fount" });
+    }
+  } catch (error) {
+    return res.json({ result: false, error: "impossible" });
+  }
+};
+
 
 module.exports = {
   signUpUser,
@@ -153,4 +166,5 @@ module.exports = {
   emailSentToResetPassword,
   resetPasswordFromEmail,
   getFriends,
+  deleteProfil,
 };

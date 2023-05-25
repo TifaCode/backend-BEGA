@@ -10,6 +10,7 @@ const {
   emailSentToResetPassword,
   resetPasswordFromEmail,
   getFriends,
+  deleteProfil,
 } = require("../controller/userController");
 
 /* post users listing. */
@@ -21,5 +22,6 @@ router.post("/updateprofil", authentication, updateProfil); // req.body.userId, 
 router.post("/resetpassword", emailSentToResetPassword); // req.body.email, envoi email
 router.post("/mailresetpassword/:userId/:token", resetPasswordFromEmail); // req.body.password, reset password
 router.get("/getfriends/:userId", getFriends);
+router.delete("/deleteprofil", deleteProfil);
 
 module.exports = router;

@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: "Already exist !",
+    unique: true,
     validate(v) {
       if (!validator.isEmail(v)) throw new Error("email non valide");
     },
@@ -45,6 +45,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     expires: { default: Date.now, type: Date, expireAfterSeconds: 300 },
   },
+  askFriend: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+      message: { type: String },
+    },
+  ],
 });
 
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {

@@ -4,11 +4,20 @@ const Strongbox = require("../models/strongboxes");
 const { checkBody } = require("../middleware/checkBody");
 
 const addEvent = async (req, res) => {
-  const { title, location, description, userId, role, date } = req.body;
+  const { title, location, description, userId, role, date, participants } =
+    req.body;
+  console.log("PART", participants);
   const newEvent = new Event({ title, location, description, date });
   console.log(userId, role);
+
   try {
     newEvent.participants.push({ userId, role });
+
+    for (const participant of participants) {
+      newEvent.participants.push({ userId: participant, role: "participant" });
+    }
+
+    console.log("NEW EVENT", newEvent);
     const saveEvent = newEvent;
     await saveEvent.save();
     res.json({ result: true, saveEvent });
@@ -36,7 +45,13 @@ const findEvent = async (req, res) => {
       .populate({
         path: "todoId",
         populate: { path: "userId" },
+      })
+      .populate({
+        path: "participants",
+        populate: { path: "userId", select: "firstname -_id" },
       });
+
+      
 
     if (!event) res.json({ result: false, error: "Event not found" });
     res.json({ result: true, event });

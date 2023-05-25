@@ -13,6 +13,7 @@ var strongboxRouter = require("./routes/strongbox");
 var transactionRouter = require("./routes/transaction");
 const todoRouter = require("./routes/todos");
 const expenseRouter = require("./routes/expenses");
+const askFriendRouter = require("./routes/askFriend");
 
 var app = express();
 app.use(cors());
@@ -29,6 +30,7 @@ app.use("/strongbox", strongboxRouter);
 app.use("/transaction", transactionRouter);
 app.use("/todo", todoRouter);
 app.use("/expense", expenseRouter);
+app.use("/askfriend", askFriendRouter);
 
 //////////////////////google auth//////////////////////////
 const session = require("express-session");

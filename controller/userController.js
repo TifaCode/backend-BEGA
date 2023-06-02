@@ -30,7 +30,7 @@ const signInUser = async (req, res) => {
   }
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) res.json({ result: false, error: "no user" });
+    if (!user) return res.json({ result: false, error: "no user" });
     const isPassword = await bcrypt.compare(req.body.password, user.password);
     if (!isPassword)
       return res.json({ result: false, error: "Impossible de se connecter" });
@@ -70,26 +70,30 @@ const userProfil = (req, res) => {
 
 const updateProfil = async (req, res) => {
   const { firstname, lastname, email, userId, password } = req.body;
-  const user = await User.findById(userId);
-  console.log(user);
-  if (!user) {
-    res.json({ result: false, error: " Impossible a modifier " });
-  } else if (password !== "" || password !== null) {
-    let newPassword = await bcrypt.hash(req.body.password, 5);
-    await user.updateOne({
-      firstname,
-      lastname,
-      email,
-      password: newPassword,
-    });
-    res.json({ result: true, error: "Porfil modifié" });
-  } else {
-    await user.updateOne({
-      firstname,
-      lastname,
-      email,
-    });
-    res.json({ result: true, error: "Porfil modifié" });
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      res.json({ result: false, error: " Impossible a modifier " });
+    } else if (!checkBody(req.body, ["password"])) {
+      await user.updateOne({
+        firstname,
+        lastname,
+        email,
+      });
+      res.json({ result: true, error: "Porfil modifié" });
+    } else {
+      //
+      let newPassword = await bcrypt.hash(req.body.password, 5);
+      await user.updateOne({
+        firstname,
+        lastname,
+        email,
+        password: newPassword,
+      });
+      res.json({ result: true, error: "Porfil modifié" });
+    }
+  } catch (error) {
+    res.json({ result: false, error: "Impossible" });
   }
 };
 /////////////////////////////////////Reset password////////////////////////////
@@ -145,7 +149,7 @@ const getFriends = async (req, res) => {
 /////////////////////////////Delete Profil/////////////////////////////////////////
 const deleteProfil = async (req, res) => {
   try {
-    const deleteUser = await User.deleteOne({ email: req.body.email })
+    const deleteUser = await User.deleteOne({ email: req.body.email });
     if (deleteUser.deletedCount > 0) {
       return res.json({ result: true, error: "User deleted" });
     } else {
@@ -155,7 +159,6 @@ const deleteProfil = async (req, res) => {
     return res.json({ result: false, error: "impossible" });
   }
 };
-
 
 module.exports = {
   signUpUser,

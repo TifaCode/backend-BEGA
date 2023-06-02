@@ -48,10 +48,8 @@ const findEvent = async (req, res) => {
       })
       .populate({
         path: "participants",
-        populate: { path: "userId", select: "firstname -_id" },
+        populate: { path: "userId", select: "firstname" },
       });
-
-      
 
     if (!event) res.json({ result: false, error: "Event not found" });
     res.json({ result: true, event });
@@ -104,7 +102,7 @@ const addFriendsOnEvent = async (req, res) => {
 };
 
 const updateEvent = async (req, res) => {
-  const { title, location, description, eventId } = req.body;
+  const { title, location, description, eventId, participants } = req.body;
 
   try {
     await Event.updateOne(
@@ -113,11 +111,12 @@ const updateEvent = async (req, res) => {
         title,
         location,
         description,
+        participants,
       }
     );
     res.json({ result: true, error: "Event updated" });
-  } catch {
-    res.json({ result: false, error: "Cannot create event" });
+  } catch (err) {
+    res.json({ result: false, error: "Cannot update event", err });
   }
 };
 
